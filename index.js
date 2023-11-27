@@ -2,7 +2,9 @@ import express from "express";
 import { sequelize } from "./models/dbConnection.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
+import { User } from "./models/user.js";
+import { Note } from "./models/note.js";
+import { Note_type } from "./models/note_type.js";
 const app = express();
 sequelize
   .authenticate()

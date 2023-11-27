@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "root",
+    "password": "adminadmin",
+    "database": "guest_note",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}
