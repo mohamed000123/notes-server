@@ -30,6 +30,7 @@ export const User = sequelize.define(
     name: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
     profile_picture: {
       type: Sequelize.STRING,
