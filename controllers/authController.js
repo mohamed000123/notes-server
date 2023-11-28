@@ -45,9 +45,9 @@ export async function signup(req, res) {
     email: req.body.email,
     password: req.body.password,
     name: req.body.name,
-    profile_picture: req.files[0].filename,
   };
   newUser.id = uuidv4();
+  req.files ? (newUser.profile_picture = req.files[0].filename) : null;
   // password hashing
   const salt = await bcrypt.genSalt();
   newUser.password = await bcrypt.hash(newUser.password, salt);

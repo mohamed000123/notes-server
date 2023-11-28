@@ -3,6 +3,8 @@ import { sequelize } from "./models/dbConnection.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
+import noteRoutes from "./routes/noteRoutes.js";
+import authCheck from "./middleware/auth.js";
 
 const app = express();
 sequelize
@@ -23,3 +25,4 @@ app.use(cors());
 
 // routes
 app.use("/", authRoutes);
+app.use("/note", authCheck, noteRoutes);

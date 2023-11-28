@@ -17,10 +17,6 @@ export const Note = sequelize.define(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    type: {
-      type: Sequelize.STRING,
-      allowNull: false,
-    },
     media_files: {
       type: Sequelize.JSON,
       allowNull: true,
@@ -32,5 +28,10 @@ export const Note = sequelize.define(
 );
 
 Note.belongsTo(Note_type);
-Note.belongsTo(User);
+Note.belongsTo(User, {
+  foreignKey: "sender_id",
+});
+Note.belongsTo(User, {
+  foreignKey: "receiver_id",
+});
 Note.sync();
