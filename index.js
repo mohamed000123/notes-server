@@ -5,7 +5,9 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import noteRoutes from "./routes/noteRoutes.js";
 import authCheck from "./middleware/auth.js";
-
+import { Note } from "./models/note.js";
+import { Note_type } from "./models/note_type.js";
+import { User } from "./models/user.js";
 const app = express();
 sequelize
   .authenticate()

@@ -21,6 +21,10 @@ export const Note = sequelize.define(
       type: Sequelize.JSON,
       allowNull: true,
     },
+    is_deleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,
