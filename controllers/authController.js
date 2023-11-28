@@ -3,9 +3,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { User } from "../models/user.js";
 import { v4 as uuidv4 } from "uuid";
+import Joi from "joi";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+export const authValidator = Joi.object().keys({
+  email: Joi.string().email(),
+  password: Joi.string().min(8).max(20).required(),
+  name: Joi.string().min(2).max(20).required(),
+});
 function createToken(id) {
   return jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: 3600 });
 }

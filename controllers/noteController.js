@@ -2,6 +2,13 @@ import { Note } from "../models/note.js";
 import { Note_type } from "../models/note_type.js";
 import { Op } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
+import Joi from "joi";
+
+export const noteValidator = Joi.object().keys({
+  title: Joi.string().min(3).max(20).required(),
+  body: Joi.string().min(3).max(300).required(),
+  NoteTypeId: Joi.valid(1, 2, 3, 4),
+});
 export const sendNote = (req, res) => {
   const receivers_no = req.body.receiver_id.length;
   let records = [];
