@@ -14,4 +14,16 @@ user can delete his notes
 
 pagination
 
+# running
+in the .env file replace DB_USER and DB_PASSWORD variables with your MYSQL DB credentials
+
+run these commands:
+    
+     npm i
+
+     npm run run_migration
+     
+     npm start
+
+
 
