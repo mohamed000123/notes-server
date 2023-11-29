@@ -8,10 +8,19 @@ export const noteValidator = Joi.object().keys({
   title: Joi.string().min(3).max(20).required(),
   body: Joi.string().min(3).max(300).required(),
   NoteTypeId: Joi.valid(1, 2, 3, 4),
+  sender_id: Joi.string().required(),
+  receiver_id: Joi.required(),
 });
 export const sendNote = (req, res) => {
   const receivers_no = req.body.receiver_id.length;
+  let uploads = req.files ? req.files : [];
+  let files = [];
   let records = [];
+  if (uploads.length > 0) {
+    uploads.forEach((file) => {
+      files.push(file.filename);
+    });
+  }
   for (let i = 0; i < receivers_no; i++) {
     records.push({
       id: uuidv4(),
@@ -20,6 +29,7 @@ export const sendNote = (req, res) => {
       NoteTypeId: req.body.NoteTypeId,
       sender_id: req.body.sender_id,
       receiver_id: req.body.receiver_id[i],
+      media_files: files,
     });
   }
   Note.bulkCreate(records)
