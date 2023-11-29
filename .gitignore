@@ -48,6 +48,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-test-multer
+test
 uploads
 .env

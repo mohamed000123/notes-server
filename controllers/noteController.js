@@ -3,6 +3,8 @@ import { Note_type } from "../models/note_type.js";
 import { Op } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 import Joi from "joi";
+import { sendNotification } from "../utils/sendNotification.js";
+import { User } from "../models/user.js";
 
 export const noteValidator = Joi.object().keys({
   title: Joi.string().min(3).max(20).required(),
@@ -11,8 +13,27 @@ export const noteValidator = Joi.object().keys({
   sender_id: Joi.string().required(),
   receiver_id: Joi.required(),
 });
+const sendNotesnotification = (title, body, receiver_id) => {
+  User.findAll({
+    where: {
+      id: receiver_id,
+    },
+    attributes: ["device_token"],
+    raw: true,
+  })
+    .then((tokens) => {
+      const tokensArray = tokens.map((token) => {
+        return token.device_token;
+      });
+      sendNotification((title = "you got new note"), title, tokensArray);
+    })
+    .catch((error) => {
+      console.error("Error fetching users:", error);
+    });
+};
 export const sendNote = (req, res) => {
-  const receivers_no = req.body.receiver_id.length;
+  const { title, body, NoteTypeId, sender_id, receiver_id } = req.body;
+  const receivers_no = receiver_id.length;
   let uploads = req.files ? req.files : [];
   let files = [];
   let records = [];
@@ -24,16 +45,17 @@ export const sendNote = (req, res) => {
   for (let i = 0; i < receivers_no; i++) {
     records.push({
       id: uuidv4(),
-      title: req.body.title,
-      body: req.body.body,
-      NoteTypeId: req.body.NoteTypeId,
-      sender_id: req.body.sender_id,
-      receiver_id: req.body.receiver_id[i],
+      title: title,
+      body: body,
+      NoteTypeId: NoteTypeId,
+      sender_id: sender_id,
+      receiver_id: receiver_id[i],
       media_files: files,
     });
   }
   Note.bulkCreate(records)
     .then(() => {
+      sendNotesnotification(title, body, receiver_id);
       res.status(200).send("note was sent successfully");
     })
     .catch((e) => {
