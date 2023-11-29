@@ -1,14 +1,13 @@
 import express from "express";
 import { mediaUpload } from "../middleware/multer.cjs";
 import { validateRequest } from "../utils/joi.js";
-
 import {
   sendNote,
   deleteNote,
   getUserNotes,
   getNoteTypes,
-  noteValidator,
 } from "../controllers/noteController.js";
+import { noteValidator } from "../middleware/validation/noteValidator.js";
 const noteRoutes = express.Router();
 noteRoutes.post(
   "/send",
